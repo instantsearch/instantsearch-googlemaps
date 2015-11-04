@@ -1,0 +1,4 @@
+node_modules/
+dist/
+example/bundle.js*
+npm-debug.log
