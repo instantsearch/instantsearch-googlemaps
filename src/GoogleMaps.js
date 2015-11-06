@@ -4,7 +4,7 @@ import React from 'react';
 import {GoogleMap, Marker} from 'react-google-maps';
 import debounce from 'lodash/function/debounce';
 
-export default class GoogleMaps extends React.Component {
+class GoogleMaps extends React.Component {
   constructor(props) {
     super(props);
     this.state = {userAction: true, userRefine: false, ignoreUpdate: false};
@@ -83,6 +83,14 @@ export default class GoogleMaps extends React.Component {
   }
 }
 
-// GoogleMaps.PropTypes = {
-//   markers: React.PropTypes.
-// };
+GoogleMaps.propTypes = {
+  markers: React.PropTypes.arrayOf(React.PropTypes.shape({
+    id: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
+    label: React.PropTypes.string,
+    position: React.PropTypes.object,
+    title: React.PropTypes.string
+  })).isRequired,
+  refine: React.PropTypes.func.isRequired
+};
+
+export default GoogleMaps;

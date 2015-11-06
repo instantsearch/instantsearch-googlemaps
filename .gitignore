@@ -1,4 +1,5 @@
 node_modules/
 dist/
+dist-es5-module/
 dev/bundle.js*
 npm-debug.log

@@ -66,8 +66,8 @@ To display your objects on a map, they will need to have a `_geoloc` attribute.
 var search = instantsearch({...});
 search.addWidget(
   instantsearchGoogleMaps({
-    container: '#search-box',
-    // options
+    container,
+    // prepareMarkerData
   })
 );
 ```
@@ -80,13 +80,39 @@ var instantsearchGoogleMaps = require('instantsearch-googlemaps');
 var search = instantsearch({...});
 search.addWidget(
   instantsearchGoogleMaps({
-    container: '#search-box',
-    // options
+    container,
+    // prepareMarkerData
   })
 );
 ```
 
 ### API
+
+#### options.container | DOMELement (required)
+
+Where to insert the map in the document.
+
+#### options.prepareMarkerData | function
+
+Called for every hit, this is the moment where you can select the label and title
+for the marker. This function should return an object in the form of `{label, title}`.
+
+Example:
+
+```js
+function prepareMarkerData(hit, index, hits) {
+  return {
+    label: hit.name,
+    title: hit.description
+  }
+}
+```
+
+The `label` first letter will be displayed on the marker on the map.
+
+The `title` will be displayed when hovering the marker.
+
+By default we use the current hit index in the results as the label and the hit `ObjectID` for the title.
 
 ## Development
 
