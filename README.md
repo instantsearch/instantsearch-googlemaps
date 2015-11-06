@@ -1,3 +1,22 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [instantsearch-googlemaps _BETA_](#instantsearch-googlemaps-_beta_)
+  - [Features](#features)
+  - [Install](#install)
+    - [From a CDN](#from-a-cdn)
+    - [With npm, browserify, webpack](#with-npm-browserify-webpack)
+  - [Usage](#usage)
+    - [Algolia requirements](#algolia-requirements)
+    - [`<script>`](#script)
+    - [npm](#npm)
+    - [API](#api)
+  - [Development](#development)
+  - [Testing](#testing)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # instantsearch-googlemaps _BETA_
 
 [algolia/instantsearch.js](https://github.com/algolia/instantsearch.js/) widget to display your [Algolia geo hits](https://www.algolia.com/doc/rest#geo-search-parameters) on a map using [Google Maps APIs](https://developers.google.com/maps/)
