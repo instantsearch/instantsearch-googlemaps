@@ -1,3 +1,19 @@
+# instantsearch-googlemaps _BETA_
+
+[algolia/instantsearch.js](https://github.com/algolia/instantsearch.js/) widget to display your [Algolia geo hits](https://www.algolia.com/doc/rest#geo-search-parameters) on a map using [Google Maps APIs](https://developers.google.com/maps/)
+
+[![Version][version-svg]][package-url] [![Build Status][travis-svg]][travis-url] [![License][license-image]][license-url] [![Downloads][downloads-image]][downloads-url]
+
+[travis-svg]: https://img.shields.io/travis/instantsearch/instantsearch-googlemaps/master.svg?style=flat-square
+[travis-url]: https://travis-ci.org/instantsearch/instantsearch-googlemaps
+[license-image]: http://img.shields.io/badge/license-MIT-green.svg?style=flat-square
+[license-url]: LICENSE
+[downloads-image]: https://img.shields.io/npm/dm/instantsearch-googlemaps.svg?style=flat-square
+[downloads-url]: http://npm-stat.com/charts.html?package=instantsearch-googlemaps
+[version-svg]: https://img.shields.io/npm/v/instantsearch-googlemaps.svg?style=flat-square
+[package-url]: https://npmjs.org/package/instantsearch-googlemaps
+[demo]: ./demo.gif
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
@@ -16,22 +32,6 @@
   - [Testing](#testing)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-# instantsearch-googlemaps _BETA_
-
-[algolia/instantsearch.js](https://github.com/algolia/instantsearch.js/) widget to display your [Algolia geo hits](https://www.algolia.com/doc/rest#geo-search-parameters) on a map using [Google Maps APIs](https://developers.google.com/maps/)
-
-[![Version][version-svg]][package-url] [![Build Status][travis-svg]][travis-url] [![License][license-image]][license-url] [![Downloads][downloads-image]][downloads-url]
-
-[travis-svg]: https://img.shields.io/travis/instantsearch/instantsearch-googlemaps/master.svg?style=flat-square
-[travis-url]: https://travis-ci.org/instantsearch/instantsearch-googlemaps
-[license-image]: http://img.shields.io/badge/license-MIT-green.svg?style=flat-square
-[license-url]: LICENSE
-[downloads-image]: https://img.shields.io/npm/dm/instantsearch-googlemaps.svg?style=flat-square
-[downloads-url]: http://npm-stat.com/charts.html?package=instantsearch-googlemaps
-[version-svg]: https://img.shields.io/npm/v/instantsearch-googlemaps.svg?style=flat-square
-[package-url]: https://npmjs.org/package/instantsearch-googlemaps
-[demo]: ./demo.gif
 
 ## Features
 
