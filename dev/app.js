@@ -7,7 +7,7 @@ let search = instantsearch({
   indexName: 'airports',
   urlSync: true,
   searchParameters: {
-    hitsPerPage: 10
+    hitsPerPage: 50
   }
 });
 
@@ -17,8 +17,7 @@ let searchBox = instantsearch.widgets.searchBox({
 
 let map = googleMaps({
   container: document.querySelector('#google-maps'),
-  defaultCenter: {lat: 0, lng: 0},
-  defaultZoom: 1
+  prepareMakerData: ({airport_id: label, name: title}) => ({label, title})
 });
 
 search.addWidget(searchBox);
