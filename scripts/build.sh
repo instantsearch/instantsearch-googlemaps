@@ -5,6 +5,9 @@ set -ev # exit when error
 mkdir -p dist/
 mkdir -p dist-es5-module/
 
+rm -rf dist/*
+rm -rf dist-es5-module/*
+
 VERSION=`cat package.json | json version`
 
 bundle='instantsearch-googlemaps'
