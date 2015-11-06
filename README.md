@@ -85,7 +85,7 @@ To display your objects on a map, they will need to have a `_geoloc` attribute.
 var search = instantsearch({...});
 search.addWidget(
   instantsearchGoogleMaps({
-    container,
+    container: document.querySelector('#map'),
     // prepareMarkerData
   })
 );
@@ -99,7 +99,7 @@ var instantsearchGoogleMaps = require('instantsearch-googlemaps');
 var search = instantsearch({...});
 search.addWidget(
   instantsearchGoogleMaps({
-    container,
+    container: document.querySelector('#map'),
     // prepareMarkerData
   })
 );
