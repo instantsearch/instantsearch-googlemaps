@@ -150,3 +150,9 @@ npm run dev
 npm install
 npm test
 ```
+
+## Publish
+
+```sh
+SEMVER_TOKEN=minor npm run release
+```
