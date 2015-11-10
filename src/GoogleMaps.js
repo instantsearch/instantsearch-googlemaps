@@ -18,12 +18,16 @@ class GoogleMaps extends React.Component {
         this._handleDragEnd
       ), 200
     );
+
+    let debouncedHandleResize = debounce(this._handleResize.bind(this), 200);
+    window.addEventListener('resize', debouncedHandleResize);
+    window.addEventListener('load', debouncedHandleResize);
   }
 
   componentDidMount() {
     // without setTimeout, the GoogleMap component will try to access state.map
     // which fail at componentDidMount
-    setTimeout(this._fitMapToMarkers.bind(this, this.props), 0);
+    setTimeout(this._fitMapToMarkers.bind(this, this.props.markers), 0);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -37,7 +41,7 @@ class GoogleMaps extends React.Component {
       return;
     }
 
-    this._fitMapToMarkers(nextProps);
+    this._fitMapToMarkers(nextProps.markers);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -45,6 +49,10 @@ class GoogleMaps extends React.Component {
       nextProps.markers.some((marker, markerIndex) =>
         this.props.markers[markerIndex] === undefined ||
         marker.id !== this.props.markers[markerIndex].id);
+  }
+
+  _handleResize() {
+    this._fitMapToMarkers(this.props.markers);
   }
 
   _shouldRefineOnMapInteraction(fn) {
@@ -76,9 +84,9 @@ class GoogleMaps extends React.Component {
     this.props.refine(this._map.getBounds());
   }
 
-  _fitMapToMarkers(props) {
+  _fitMapToMarkers(markers) {
     let bounds = new google.maps.LatLngBounds();
-    props.markers.forEach(({position}) => bounds.extend(position));
+    markers.forEach(({position}) => bounds.extend(position));
 
     this.setState({userAction: false}, function() {
       this._map.fitBounds(bounds);

@@ -37,6 +37,7 @@
 
 - display your objects on a [Google Map](https://developers.google.com/maps/documentation/javascript/)
 - refine search on zoom or drag as an option
+- adjust the map on window resize if needed
 
 ![Demo of the instantsearchGoogleMaps widget][demo]
 
