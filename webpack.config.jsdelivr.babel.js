@@ -17,6 +17,8 @@ export default {
     react: 'React'
   }, {
     'react-dom': 'ReactDOM'
+  }, {
+    'instantsearch.js': 'instantsearch'
   }],
   plugins: [
     new webpack.DefinePlugin({
