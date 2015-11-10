@@ -84,7 +84,7 @@ To display your objects on a map, they will need to have a `_geoloc` attribute.
 ```js
 var search = instantsearch({...});
 search.addWidget(
-  instantsearchGoogleMaps({
+  instantsearch.widgets.googleMaps({
     container: document.querySelector('#map'),
     // prepareMarkerData
   })

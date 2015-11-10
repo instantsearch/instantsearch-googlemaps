@@ -4,6 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import GoogleMaps from './src/GoogleMaps.js';
 import debounce from 'lodash/function/debounce';
+import instantsearch from 'instantsearch.js';
 
 /**
  * algolia/instantsearch.js widget to display your Algolia geo hits on a map using Google Maps APIs
@@ -77,6 +78,8 @@ function googleMaps({
   // to display a map with all the tiles and a constantly mooving map is
   // not UX friendly
   widget.render = debounce(widget.render, 200, {leading: true});
+
+  instantsearch.widgets.googleMaps = widget;
 
   return widget;
 }
