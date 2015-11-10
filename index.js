@@ -79,9 +79,9 @@ function googleMaps({
   // not UX friendly
   widget.render = debounce(widget.render, 200, {leading: true});
 
-  instantsearch.widgets.googleMaps = widget;
-
   return widget;
 }
+
+instantsearch.widgets.googleMaps = googleMaps;
 
 export default googleMaps;
