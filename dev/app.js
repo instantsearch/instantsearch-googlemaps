@@ -17,7 +17,8 @@ let searchBox = instantsearch.widgets.searchBox({
 
 let map = googleMaps({
   container: document.querySelector('#google-maps'),
-  prepareMarkerData: ({airport_id: label, name: title}) => ({label, title})
+  prepareMarkerData: ({airport_id: label, name: title}) => ({label, title}),
+  refineOnMapInteraction: true
 });
 
 search.addWidget(searchBox);

@@ -29,10 +29,12 @@ import debounce from 'lodash/function/debounce';
  *
  * By default we use the current hit index in the results as the label and the hit `ObjectID` for the title.
  * when hovering the marker
+ * @param {boolean} [options.refineOnMapInteraction=false] Should we refine the search on map interaction, default to false
  * @return {Object}
  */
 function googleMaps({
   container,
+  refineOnMapInteraction = false,
   prepareMarkerData = (hit, index) => ({
     label: `${index}`,
     title: hit.objectID
@@ -65,6 +67,7 @@ function googleMaps({
         <GoogleMaps
           markers={markers}
           refine={this._refine.bind(this, {helper})}
+          refineOnMapInteraction={refineOnMapInteraction}
         />, container
       );
     }

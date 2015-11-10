@@ -8,8 +8,16 @@ class GoogleMaps extends React.Component {
   constructor(props) {
     super(props);
     this.state = {userAction: true, userRefine: false, ignoreUpdate: false};
-    this._handleZoomChanged = debounce(this._handleZoomChanged, 200);
-    this._handleDragEnd = debounce(this._handleDragEnd, 200);
+    this._handleZoomChanged = debounce(
+      this._shouldRefineOnMapInteraction(
+        this._handleZoomChanged
+      ), 200
+    );
+    this._handleDragEnd = debounce(
+      this._shouldRefineOnMapInteraction(
+        this._handleDragEnd
+      ), 200
+    );
   }
 
   componentDidMount() {
@@ -37,6 +45,14 @@ class GoogleMaps extends React.Component {
       nextProps.markers.some((marker, markerIndex) =>
         this.props.markers[markerIndex] === undefined ||
         marker.id !== this.props.markers[markerIndex].id);
+  }
+
+  _shouldRefineOnMapInteraction(fn) {
+    if (this.props.refineOnMapInteraction === true) {
+      return fn;
+    }
+
+    return function noop() {};
   }
 
   _handleDragEnd() {
@@ -90,7 +106,8 @@ GoogleMaps.propTypes = {
     position: React.PropTypes.object,
     title: React.PropTypes.string
   })).isRequired,
-  refine: React.PropTypes.func.isRequired
+  refine: React.PropTypes.func.isRequired,
+  refineOnMapInteraction: React.PropTypes.bool
 };
 
 export default GoogleMaps;

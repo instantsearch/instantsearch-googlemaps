@@ -36,7 +36,7 @@
 ## Features
 
 - display your objects on a [Google Map](https://developers.google.com/maps/documentation/javascript/)
-- refine search on zoom or drag
+- refine search on zoom or drag as an option
 
 ![Demo of the instantsearchGoogleMaps widget][demo]
 
@@ -132,6 +132,10 @@ The `label` first letter will be displayed on the marker on the map.
 The `title` will be displayed when hovering the marker.
 
 By default we use the current hit index in the results as the label and the hit `ObjectID` for the title.
+
+#### options.refineOnMapInteraction | boolean
+
+Should we refine the search on map interaction, default to false.
 
 ## Development
 
