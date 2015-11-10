@@ -29,6 +29,7 @@
   - [API](#api)
 - [Development](#development)
 - [Testing](#testing)
+- [Publish](#publish)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 

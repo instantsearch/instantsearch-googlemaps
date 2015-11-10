@@ -1,3 +1,19 @@
+<a name="1.1.2"></a>
+## [1.1.2](https://github.com/instantsearch/instantsearch-googlemaps/compare/1.0.0...v1.1.2) (2015-11-10)
+
+
+### Bug Fixes
+
+* **build:** fix badly added instantsearch.widgets ([5a23d14](https://github.com/instantsearch/instantsearch-googlemaps/commit/5a23d14))
+
+### Features
+
+* **build:** expose in instantsearch.widgets.googleMaps also ([b230bdb](https://github.com/instantsearch/instantsearch-googlemaps/commit/b230bdb))
+* **refine:** create refineOnMapInteraction option ([da93a86](https://github.com/instantsearch/instantsearch-googlemaps/commit/da93a86))
+* fit map to window on window resize when needed ([bf74959](https://github.com/instantsearch/instantsearch-googlemaps/commit/bf74959))
+
+
+
 <a name="1.1.1"></a>
 ## [1.1.1](https://github.com/instantsearch/instantsearch-googlemaps/compare/1.0.0...v1.1.1) (2015-11-10)
 
