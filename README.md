@@ -109,7 +109,7 @@ search.addWidget(
 
 #### options.container | DOMELement (required)
 
-Where to insert the map in the document.
+Where to insert the map in the document. This is required.
 
 #### options.prepareMarkerData | function
 

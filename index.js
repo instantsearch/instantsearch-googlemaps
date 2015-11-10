@@ -7,7 +7,7 @@ import debounce from 'lodash/function/debounce';
 
 /**
  * algolia/instantsearch.js widget to display your Algolia geo hits on a map using Google Maps APIs
- * @param  {DOMElement} options.container Where to insert the map in the document.
+ * @param  {DOMElement} options.container Where to insert the map in the document. This is required.
  * @param  {function} [options.prepareMarkerData] Function Called for every hit,
  * this is the moment where you can select the label and title
  * for the marker. This function should return an object in the form of `{label, title}`.
