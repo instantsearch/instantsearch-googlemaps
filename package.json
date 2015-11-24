@@ -26,10 +26,10 @@
     "eslint-config-airbnb": "^0.1.0",
     "eslint-config-algolia": "^4.2.0",
     "eslint-plugin-react": "^3.5.1",
-    "instantsearch.js": "^0.10.0",
+    "instantsearch.js": "^1.0.0",
     "json": "^9.0.3",
     "mversion": "^1.10.1",
-    "npm-shrinkwrap": "^5.4.1",
+    "npm-shrinkwrap": "^200.4.0",
     "pretty-bytes": "^2.0.1",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
@@ -40,7 +40,7 @@
   "peerDependencies": {
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
-    "instantsearch.js": "^0.10.0"
+    "instantsearch.js": "^1.0.0"
   },
   "dependencies": {
     "lodash": "^3.10.1",
