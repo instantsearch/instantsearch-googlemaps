@@ -2,6 +2,7 @@
 
 import React from 'react';
 import {GoogleMap, Marker} from 'react-google-maps';
+import MarkerClusterer from 'react-google-maps/lib/addons/MarkerClusterer';
 import debounce from 'lodash/function/debounce';
 
 class GoogleMaps extends React.Component {
@@ -101,7 +102,9 @@ class GoogleMaps extends React.Component {
         onZoomChanged={this._handleZoomChanged.bind(this)}
         ref={map => this._map = map}
       >
-        {this.props.markers.map(marker => <Marker key={marker.id} {...marker} />)}
+        <MarkerClusterer>
+          {this.props.markers.map(marker => <Marker key={marker.id} {...marker} />)}
+        </MarkerClusterer>
       </GoogleMap>
     );
   }

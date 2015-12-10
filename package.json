@@ -44,6 +44,6 @@
   },
   "dependencies": {
     "lodash": "^3.10.1",
-    "react-google-maps": "^4.2.0"
+    "react-google-maps": "^4.7.0"
   }
 }
