@@ -1,3 +1,22 @@
+<a name="1.2.1"></a>
+## [1.2.1](https://github.com/instantsearch/instantsearch-googlemaps/compare/1.0.0...v1.2.1) (2015-12-10)
+
+
+### Bug Fixes
+
+* **build:** fix badly added instantsearch.widgets ([5a23d14](https://github.com/instantsearch/instantsearch-googlemaps/commit/5a23d14))
+* **init:** switch to new init mode GoogleMapLoader ([4804fa5](https://github.com/instantsearch/instantsearch-googlemaps/commit/4804fa5))
+* **instantsearch:** move peerDependency to instantsearch.js 1.0.0 ([78c9423](https://github.com/instantsearch/instantsearch-googlemaps/commit/78c9423)), closes [#1](https://github.com/instantsearch/instantsearch-googlemaps/issues/1)
+
+### Features
+
+* **build:** expose in instantsearch.widgets.googleMaps also ([b230bdb](https://github.com/instantsearch/instantsearch-googlemaps/commit/b230bdb))
+* fit map to window on window resize when needed ([bf74959](https://github.com/instantsearch/instantsearch-googlemaps/commit/bf74959))
+* **markers:** activate marker cluster automatically ([0018a31](https://github.com/instantsearch/instantsearch-googlemaps/commit/0018a31))
+* **refine:** create refineOnMapInteraction option ([da93a86](https://github.com/instantsearch/instantsearch-googlemaps/commit/da93a86))
+
+
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/instantsearch/instantsearch-googlemaps/compare/1.0.0...v1.2.0) (2015-12-10)
 
