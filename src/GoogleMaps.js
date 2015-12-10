@@ -1,7 +1,7 @@
 /* global google */
 
 import React from 'react';
-import {GoogleMap, Marker} from 'react-google-maps';
+import {GoogleMapLoader, GoogleMap, Marker} from 'react-google-maps';
 import MarkerClusterer from 'react-google-maps/lib/addons/MarkerClusterer';
 import debounce from 'lodash/function/debounce';
 
@@ -19,16 +19,13 @@ class GoogleMaps extends React.Component {
         this._handleDragEnd
       ), 200
     );
-
-    let debouncedHandleResize = debounce(this._handleResize.bind(this), 200);
-    window.addEventListener('resize', debouncedHandleResize);
-    window.addEventListener('load', debouncedHandleResize);
   }
 
   componentDidMount() {
-    // without setTimeout, the GoogleMap component will try to access state.map
-    // which fail at componentDidMount
-    setTimeout(this._fitMapToMarkers.bind(this, this.props.markers), 0);
+    let debouncedFitMapToMarkers = debounce(this._fitMapToMarkers.bind(this), 200);
+    debouncedFitMapToMarkers();
+    window.addEventListener('resize', debouncedFitMapToMarkers);
+    window.addEventListener('load', debouncedFitMapToMarkers);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -50,10 +47,6 @@ class GoogleMaps extends React.Component {
       nextProps.markers.some((marker, markerIndex) =>
         this.props.markers[markerIndex] === undefined ||
         marker.id !== this.props.markers[markerIndex].id);
-  }
-
-  _handleResize() {
-    this._fitMapToMarkers(this.props.markers);
   }
 
   _shouldRefineOnMapInteraction(fn) {
@@ -86,6 +79,10 @@ class GoogleMaps extends React.Component {
   }
 
   _fitMapToMarkers(markers) {
+    if (!markers) {
+      markers = this.props.markers;
+    }
+
     let bounds = new google.maps.LatLngBounds();
     markers.forEach(({position}) => bounds.extend(position));
 
@@ -96,16 +93,23 @@ class GoogleMaps extends React.Component {
 
   render() {
     return (
-      <GoogleMap
-        containerProps={{style: {height: '100%'}}}
-        onDragend={this._handleDragEnd.bind(this)}
-        onZoomChanged={this._handleZoomChanged.bind(this)}
-        ref={map => this._map = map}
-      >
-        <MarkerClusterer>
-          {this.props.markers.map(marker => <Marker key={marker.id} {...marker} />)}
-        </MarkerClusterer>
-      </GoogleMap>
+      <GoogleMapLoader
+        containerElement={<div style={{height: '100%'}}/>}
+        googleMapElement={
+          <GoogleMap
+            onDragend={this._handleDragEnd.bind(this)}
+            onZoomChanged={this._handleZoomChanged.bind(this)}
+            ref={map => this._map = map}
+          >
+            <MarkerClusterer
+              averageCenter
+              enableRetinaIcons
+            >
+              {this.props.markers.map(marker => <Marker key={marker.id} {...marker} />)}
+            </MarkerClusterer>
+          </GoogleMap>
+        }
+      />
     );
   }
 }
