@@ -18,8 +18,8 @@ let searchBox = instantsearch.widgets.searchBox({
 let map = googleMaps({
   container: document.querySelector('#google-maps'),
   prepareMarkerData: ({airport_id: label, name: title}) => ({label, title}),
-  // seems buggy, maybe because of the differences in bounding
-  // boxes between us and google maps
+  // currently buggy because google mapt bounds and algolia geo bounds (aroundLatLng)
+  // are somehow different, need more insights
   refineOnMapInteraction: false
 });
 

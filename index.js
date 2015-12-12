@@ -43,14 +43,11 @@ function googleMaps({
   })
 }) {
   let widget = {
-    _refine({helper}, bounds) {
-      if (!bounds) {
-        return;
-      }
-
-      let p1 = bounds.getNorthEast();
-      let p2 = bounds.getSouthWest();
+    _refine({helper}, userRefine) {
+      let p1 = userRefine.bounds.getNorthEast();
+      let p2 = userRefine.bounds.getSouthWest();
       let box = [p1.lat(), p1.lng(), p2.lat(), p2.lng()];
+      this._lastUserRefine = userRefine;
 
       helper
         .setQueryParameter('insideBoundingBox', box.join(','))
@@ -59,26 +56,84 @@ function googleMaps({
     },
 
     render({results, helper}) {
+      let zoom;
+      let center;
+
       let markers = results.hits.map((hit, index) => ({
         position: new google.maps.LatLng(hit._geoloc),
         id: hit.objectID,
         ...prepareMarkerData(hit, index, results.hits)
       }));
 
+      if (markers.length === 0) {
+        zoom = 1;
+        center = new google.maps.LatLng({
+          lat: 48.797885,
+          lng: 2.337034
+        });
+      } else if (this._lastUserRefine) {
+        zoom = this._lastUserRefine.zoom;
+        center = this._lastUserRefine.center;
+        this._lastUserRefine = false;
+      } else {
+        let bounds = new google.maps.LatLngBounds();
+        markers.forEach(marker => bounds.extend(marker.position));
+        zoom = this._getBestZoomLevel(bounds, container.getBoundingClientRect());
+        center = bounds.getCenter();
+      }
+
       ReactDOM.render(
         <GoogleMaps
+          center={center}
           markers={markers}
           refine={this._refine.bind(this, {helper})}
           refineOnMapInteraction={refineOnMapInteraction}
+          zoom={zoom}
         />, container
       );
+    },
+
+    // http://stackoverflow.com/a/13274361/147079
+    // We cannot use map.fitBounds because we are in a React world
+    // where you should not (and it does not works) try to modify
+    // the rendering once rendered
+    // You need to recompute the right props
+    // It's actually a lot easier than the previous implementation
+    // that was using a LOT of state
+    _getBestZoomLevel(bounds, mapDim) {
+      const WORLD_DIM = {height: 256, width: 256};
+      const ZOOM_MAX = 21;
+
+      function latRad(lat) {
+        var sin = Math.sin(lat * Math.PI / 180);
+        var radX2 = Math.log((1 + sin) / (1 - sin)) / 2;
+        return Math.max(Math.min(radX2, Math.PI), -Math.PI) / 2;
+      }
+
+      function zoom(mapPx, worldPx, fraction) {
+        return Math.floor(Math.log(mapPx / worldPx / fraction) / Math.LN2);
+      }
+
+      var ne = bounds.getNorthEast();
+      var sw = bounds.getSouthWest();
+
+      var latFraction = (latRad(ne.lat()) - latRad(sw.lat())) / Math.PI;
+
+      var lngDiff = ne.lng() - sw.lng();
+      var lngFraction = ((lngDiff < 0) ? (lngDiff + 360) : lngDiff) / 360;
+
+      var latZoom = zoom(mapDim.height, WORLD_DIM.height, latFraction);
+      var lngZoom = zoom(mapDim.width, WORLD_DIM.width, lngFraction);
+
+      return Math.min(latZoom, lngZoom, ZOOM_MAX);
     }
   };
 
-  // no need to do too much map rendering, it can take a lot of time
-  // to display a map with all the tiles and a constantly mooving map is
-  // not UX friendly
-  widget.render = debounce(widget.render, 200, {leading: true});
+  // no need to do too much map rendering:
+  //  - it can take a lot of time to display a map with all the tiles
+  //  - most of the time the first letters are not worth a map
+  //  - a constantly moving map is annoying
+  widget.render = debounce(widget.render, 500);
 
   return widget;
 }
