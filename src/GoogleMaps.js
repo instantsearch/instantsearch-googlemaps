@@ -3,14 +3,8 @@
 import React from 'react';
 import {GoogleMapLoader, GoogleMap, Marker} from 'react-google-maps';
 import MarkerClusterer from 'react-google-maps/lib/addons/MarkerClusterer';
-import debounce from 'lodash/function/debounce';
 
 class GoogleMaps extends React.Component {
-  constructor(props) {
-    super(props);
-    this._userRefine = debounce(this._userRefine, 200);
-  }
-
   shouldComponentUpdate(nextProps) {
     return nextProps.zoom !== this.props.zoom || // user has changed zoom
       nextProps.markers.length !== this.props.markers.length || // different results number

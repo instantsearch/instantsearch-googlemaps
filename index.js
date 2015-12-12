@@ -3,7 +3,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import GoogleMaps from './src/GoogleMaps.js';
-import debounce from 'lodash/function/debounce';
 import instantsearch from 'instantsearch.js';
 
 /**
@@ -128,12 +127,6 @@ function googleMaps({
       return Math.min(latZoom, lngZoom, ZOOM_MAX);
     }
   };
-
-  // no need to do too much map rendering:
-  //  - it can take a lot of time to display a map with all the tiles
-  //  - most of the time the first letters are not worth a map
-  //  - a constantly moving map is annoying
-  widget.render = debounce(widget.render, 500);
 
   return widget;
 }
