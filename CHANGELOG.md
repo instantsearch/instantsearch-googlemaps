@@ -1,3 +1,13 @@
+<a name="1.2.3"></a>
+## [1.2.3](https://github.com/instantsearch/instantsearch-googlemaps/compare/v2.2.2...v1.2.3) (2015-12-12)
+
+
+### Bug Fixes
+
+* **debounce:** stop debouncing, getting more bugs ([1f28a51](https://github.com/instantsearch/instantsearch-googlemaps/commit/1f28a51))
+
+
+
 <a name="1.2.2"></a>
 ## [1.2.2](https://github.com/instantsearch/instantsearch-googlemaps/compare/1.0.0...v1.2.2) (2015-12-12)
 
