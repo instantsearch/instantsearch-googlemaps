@@ -27,23 +27,23 @@
     "eslint-config-algolia": "^4.5.0",
     "eslint-plugin-algolia": "^1.5.0",
     "eslint-plugin-react": "^3.11.3",
-    "instantsearch.js": "^1.1.0",
+    "instantsearch.js": "^1.4.4",
     "json": "^9.0.3",
     "mversion": "^1.10.1",
     "npm-shrinkwrap": "^200.4.0",
     "pretty-bytes": "^2.0.1",
-    "react": "^0.14.0",
-    "react-dom": "^0.14.0",
+    "react": "^15.0.1",
+    "react-dom": "^15.0.1",
     "uglifyjs": "^2.4.10",
-    "webpack": "^1.12.9",
+    "webpack": "^1.12.15",
     "webpack-dev-server": "^1.14.0"
   },
   "peerDependencies": {
-    "react": "^0.14.0",
-    "react-dom": "^0.14.0",
+    "react": "^15.0.1",
+    "react-dom": "^15.0.1",
     "instantsearch.js": "^1.0.0"
   },
   "dependencies": {
-    "react-google-maps": "^4.7.0"
+    "react-google-maps": "^4.9.1"
   }
 }

@@ -5,97 +5,78 @@ import {GoogleMapLoader, GoogleMap, Marker, InfoWindow} from 'react-google-maps'
 import MarkerClusterer from 'react-google-maps/lib/addons/MarkerClusterer';
 
 class GoogleMaps extends React.Component {
-
-  constructor() {
-    super();
-    this.state = { 
-      markerID: null
-    }
+  constructor(props) {
+    super(props);
+    this._handleUserAction = this._handleUserAction.bind(this);
   }
 
-  shouldComponentUpdate(nextProps,nextState) {
+  shouldComponentUpdate(nextProps) {
     return nextProps.zoom !== this.props.zoom || // user has changed zoom
-      nextState.markerID !== this.state.markerID || // user has clicked on marker
+      nextProps.activeMarkerId !== this.props.activeMarkerId || // user has clicked on marker
       nextProps.markers.length !== this.props.markers.length || // different results number
       nextProps.markers.some((marker, markerIndex) => // same number of results, but different markers?
         this.props.markers[markerIndex] === undefined ||
         marker.id !== this.props.markers[markerIndex].id);
   }
 
-  _shouldRefineOnMapInteraction(fn) {
-    if (this.props.refineOnMapInteraction === true) {
-      return fn;
-    }
-
-    return function noop() {};
-  }
-
-  _userRefine() {
-    if (this.props.refineOnMapInteraction) {
-      this.props.refine({
-        bounds: this._map.getBounds(),
-        center: this._map.getCenter(),
-        zoom: this._map.getZoom()
-      });
-    }
-  }
-
-  _handleMarkerClick(marker) {
-    this.props.refine({
+  _handleUserAction() {
+    this.props.onUserAction({
       bounds: this._map.getBounds(),
       center: this._map.getCenter(),
       zoom: this._map.getZoom()
     });
-    this.setState({ markerID: marker.id });
   }
 
-  _handleMarkerClose() {
-    this.setState({ markerID: null });
-  }
-
-  _renderInfoWindow(ref, marker) {
+  _renderInfoWindow({marker, handleOnCloseClick}) {
     return (
-      <InfoWindow 
-        key={`${ref}_info_window`}
-        onCloseclick={this._handleMarkerClose.bind(this)}
+      <InfoWindow
+        onCloseclick={handleOnCloseClick}
       >
         <div>
-          <h2>{ marker.title }</h2>
-          <p>{ marker.label }</p>
+          <h2>{marker.markerData.title}</h2>
+          <p>{marker.markerData.label}</p>
         </div>
       </InfoWindow>
     )
   }
 
   render() {
+    console.log('render')
+
     return (
       <GoogleMapLoader
         containerElement={<div style={{height: '100%'}}/>}
         googleMapElement={
           <GoogleMap
-            onDragend={this._userRefine.bind(this)}
-            onZoomChanged={this._userRefine.bind(this)}
+            onDragend={this._handleUserAction}
+            onZoomChanged={this._handleUserAction}
             ref={map => this._map = map}
-            {...this.props}
+            // https://developers.google.com/maps/documentation/javascript/3.exp/reference#MapOptions
+            {...this.props.googleMapOptions}
           >
-            <MarkerClusterer
-              averageCenter
-              enableRetinaIcons
-              gridSize={30}
-            >
-              {this.props.markers.map((marker,index) => {
-                const ref = `marker_${index}`;
-                return (
-                  <Marker {...marker}
-                    key={index} 
-                    ref={ref}
-                    onClick={ this._handleMarkerClick.bind(this, marker) }
-                  >
-                    { this.state.markerID === marker.id ? this._renderInfoWindow(ref, marker) : null }
-                  </Marker>
-                )
-              })}
-            </MarkerClusterer>
+            {this.props.markers.map((marker, index) => {
+              return (
+                <Marker
+                  key={marker.id}
+                  onClick={() => this.props.onMarkerOpen({
+                    marker,
+                    index
+                  })}
+                  {...marker.markerData}
+                >
+                  {this.props.activeMarkerId === marker.id ?
+                    this._renderInfoWindow({
+                      marker,
+                      handleOnCloseClick: () => this.props.onMarkerClose({
+                        marker,
+                        index
+                      })
+                    }) :
+                    null
+                  }
+                </Marker>
+              )
+            })}
           </GoogleMap>
         }
       />
@@ -111,7 +92,6 @@ GoogleMaps.propTypes = {
     position: React.PropTypes.object, // google.maps.LatLng
     title: React.PropTypes.string
   })).isRequired,
-  refine: React.PropTypes.func.isRequired,
   refineOnMapInteraction: React.PropTypes.bool,
   zoom: React.PropTypes.number
 };

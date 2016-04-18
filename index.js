@@ -8,14 +8,14 @@ import instantsearch from 'instantsearch.js';
 /**
  * algolia/instantsearch.js widget to display your Algolia geo hits on a map using Google Maps APIs
  * @param  {DOMElement} options.container Where to insert the map in the document. This is required.
- * @param  {function} [options.prepareMarkerData] Function Called for every hit,
+ * @param  {function} [options.prepareMarkerOptions] Function Called for every hit,
  * this is the moment where you can select the label and title
  * for the marker. This function should return an object in the form of `{label, title}`.
  *
  * Example:
  *
  * ```js
- * function prepareMarkerData(hit, index, hits) {
+ * function prepareMarkerOptions(hit, index, hits) {
  *   return {
  *     label: hit.name,
  *     title: hit.description
@@ -36,17 +36,30 @@ import instantsearch from 'instantsearch.js';
 function googleMaps({
   container,
   refineOnMapInteraction = false,
-  prepareMarkerData = (hit, index) => ({
-    label: `${index}`,
-    title: hit.objectID
+  // https://developers.google.com/maps/documentation/javascript/3.exp/reference#MarkerOptions
+  computeMarkerOptions = ({hit, index, isActive}) => ({
+    label: `${index}`, // show the marker number as first letter
+    title: hit.objectID // show a tooltip with the objectID by default when hovering
   })
 }) {
   let widget = {
-    _refine({helper}, userRefine) {
-      let p1 = userRefine.bounds.getNorthEast();
-      let p2 = userRefine.bounds.getSouthWest();
+    init({helper}) {
+      this._handleUserAction = this._handleUserAction.bind(this, helper);
+      this._handleMarkerOpen = this._handleMarkerOpen.bind(this);
+      this._handleMarkerClose = this._handleMarkerClose.bind(this);
+    },
+
+    _handleUserAction(helper, {bounds, center, zoom}) {
+      this._userZoomCenter = {center, zoom};
+
+      if (!refineOnMapInteraction) {
+        this._lastZoomCenter = {center, zoom};
+        return;
+      }
+
+      let p1 = bounds.getNorthEast();
+      let p2 = bounds.getSouthWest();
       let box = [p1.lat(), p1.lng(), p2.lat(), p2.lng()];
-      this._lastUserRefine = userRefine;
 
       helper
         .setQueryParameter('insideBoundingBox', box.join(','))
@@ -54,14 +67,38 @@ function googleMaps({
         .setQueryParameter('insideBoundingBox', undefined);
     },
 
-    render({results, helper}) {
+    _handleMarkerOpen({marker, index}) {
+      this._setActiveMarker(marker.id, index);
+    },
+
+    _handleMarkerClose({marker, index}) {
+      this._setActiveMarker(null, index);
+    },
+
+    _setActiveMarker(id, index) {
+      this.render({
+        results: this._results,
+        activeMarkerId: id,
+        activeMarkerIndex: index,
+        zoomCenter: this._lastZoomCenter
+      });
+    },
+
+    render({results, activeMarkerId, activeMarkerIndex, zoomCenter}) {
       let zoom;
       let center;
 
+      this._results = results;
+
       let markers = results.hits.map((hit, index) => ({
-        position: new google.maps.LatLng(hit._geoloc),
         id: hit.objectID,
-        ...prepareMarkerData(hit, index, results.hits)
+        markerData: {
+          // this is the options passed to a GoogleMaps Marker
+          // https://developers.google.com/maps/documentation/javascript/3.exp/reference#MarkerOptions
+          position: new google.maps.LatLng(hit._geoloc),
+          ...computeMarkerOptions({hit, index, hits: results.hits, isActive: activeMarkerIndex === index})
+        },
+        hit
       }));
 
       if (markers.length === 0) {
@@ -70,24 +107,30 @@ function googleMaps({
           lat: 48.797885,
           lng: 2.337034
         });
-      } else if (this._lastUserRefine) {
-        zoom = this._lastUserRefine.zoom;
-        center = this._lastUserRefine.center;
-        this._lastUserRefine = false;
+      } else if (zoomCenter) {
+        zoom = zoomCenter.zoom;
+        center = zoomCenter.center;
+      } else if (this._userZoomCenter) {
+        zoom = this._userZoomCenter.zoom;
+        center = this._userZoomCenter.center;
+        this._userZoomCenter = false;
       } else {
         let bounds = new google.maps.LatLngBounds();
-        markers.forEach(marker => bounds.extend(marker.position));
+        markers.forEach(marker => bounds.extend(marker.markerData.position));
         zoom = this._getBestZoomLevel(bounds, container.getBoundingClientRect());
         center = bounds.getCenter();
       }
 
+      this._lastZoomCenter = {center, zoom};
+
       ReactDOM.render(
         <GoogleMaps
-          center={center}
+          activeMarkerId={activeMarkerId}
+          googleMapOptions={{center, zoom}}
           markers={markers}
-          refine={this._refine.bind(this, {helper})}
-          refineOnMapInteraction={refineOnMapInteraction}
-          zoom={zoom}
+          onMarkerClose={this._handleMarkerClose}
+          onMarkerOpen={this._handleMarkerOpen}
+          onUserAction={this._handleUserAction}
         />, container
       );
     },

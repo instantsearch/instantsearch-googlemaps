@@ -1,6 +1,11 @@
 #google-maps {
   width: 60%;
-  height: 500px;
+  height: 830px;
+  float: left;
+}
+
+#hits {
+  margin-left: 62%;
 }
 
 .ais-search-box {
