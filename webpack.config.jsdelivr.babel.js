@@ -1,4 +1,6 @@
 import webpack from 'webpack';
+import autoprefixer from 'autoprefixer';
+import csso from 'postcss-csso';
 
 export default {
   entry: './index.js',
@@ -11,8 +13,14 @@ export default {
   module: {
     loaders: [{
       test: /\.js$/, exclude: /node_modules/, loader: 'babel'
+    }, {
+      test: /\.svg$/, loader: 'raw', exclude: /node_modules/
+    }, {
+      test: /\.css$/, exclude: /node_modules/,
+      loaders: ['style?insertAt=top', 'css', 'postcss']
     }]
   },
+  postcss: () => [autoprefixer, csso],
   externals: [{
     react: 'React'
   }, {

@@ -1,20 +1,49 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge">
   <title>instantsearchGoogleMaps - widget demo</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap/3/css/bootstrap.min.css">
   <link rel="stylesheet" href="style.css">
   <!--[if lte IE 9]>
   <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
   <![endif]-->
 </head>
 <body>
-  <h1><a href="./">instantsearchGoogleMaps</a> <small>widget demo</small></h1>
-  <h2>Search for airports: <span id="search-box"></span></h2>
+  <div class="container">
+    <div class="page-header">
+      <p><a title="Go to the instantsearch.js website" href="//community.algolia.com/instantsearch.js"><img src="https://res.cloudinary.com/hilnmyskv/image/upload/v1461158442/logo-instantsearchjs.svg" height="30" /></a></p>
+      <h1>
+        <a href="./">GoogleMaps widget</a> <a href="//github.com/instantsearch/instantsearch-googlemaps#readme">
+          <img src="https://res.cloudinary.com/hilnmyskv/image/upload/v1461160052/icon-github.svg" height="20" />
+        </a>
+      </h1>
+      <p>
+        This webpage is an example usage of the instantsearch-googlemaps widget.
+        Full documentation available in the
+        <a href="//github.com/instantsearch/instantsearch-googlemaps#readme">
+          <img src="https://res.cloudinary.com/hilnmyskv/image/upload/v1461160052/icon-github.svg" height="16" />
+          GitHub repository
+        </a>.
+      </p>
+    </div>
 
-  <div id="google-maps"></div>
-  <div id="hits"></div>
+    <form class="form-inline">
+      <div class="form-group">
+        <input id="search-box" type="text" placeholder="Search for airports" class="form-control input-lg" />
+      </div>
+    </form>
+
+    <div class="row">
+      <div class="col-md-4">
+        <div id="hits"></div>
+      </div>
+      <div class="col-md-8">
+        <div id="google-maps"></div>
+      </div>
+    </div>
+  </div>
 
   <script src="//maps.googleapis.com/maps/api/js"></script>
   <script src="bundle.js"></script>

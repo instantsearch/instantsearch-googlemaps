@@ -1,13 +1,18 @@
 #google-maps {
-  width: 60%;
-  height: 830px;
-  float: left;
+  height: 840px;
 }
 
-#hits {
-  margin-left: 62%;
+.ais-hits--item {
+  cursor: pointer;
+  transition: background-color, border-left 150ms;
 }
 
-.ais-search-box {
-  display: inline;
+.ais-hits--item__marker-hover,
+.ais-hits--item__marker-active {
+  background-color: #f3f4f7;
+}
+
+.ais-hits--item__marker-active {
+  border-left: 2em solid #46aeda;
+  padding-left: 1em;
 }

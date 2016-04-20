@@ -1,0 +1,39 @@
+.ais-google-maps--pin-wrapper {
+  /* Ask SVG to scale entirely: https://css-tricks.com/scale-svg/#article-header-id-9 */
+  width: auto;
+}
+
+.ais-google-maps--marker {
+  cursor: pointer;
+  width: 20px;
+  height: 32px;
+}
+
+.ais-google-maps--marker__hover, .ais-google-maps--marker__active {
+  transition: transform 100ms;
+  transform: scale(1.4) translateY(-7px);
+  z-index: 1;
+}
+
+.ais-google-maps--marker__hover .ais-google-maps--pin,
+.ais-google-maps--marker__active .ais-google-maps--pin {
+  fill: #e6d2fc;
+  stroke: #354c89;
+}
+
+.ais-google-maps--pin {
+  fill: #46aeda;
+  stroke: #1f3b5d;
+  transition: fill 150ms;
+}
+
+.ais-google-maps--pin-circle {
+  fill: #ffffff
+}
+
+.ais-google-maps--infobox {
+  background: #fff;
+  border: 2px solid #46aeda;
+  border-radius: 3px;
+  padding: .5em 1em;
+}
