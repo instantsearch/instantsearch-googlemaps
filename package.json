@@ -9,7 +9,8 @@
     "build": "./scripts/build.sh",
     "release": "./scripts/release.sh",
     "lint": "eslint .",
-    "test": "npm run lint"
+    "test": "npm run lint",
+    "watch": "webpack --config webpack.config.jsdelivr.babel.js -w"
   },
   "author": "Algolia <support@algolia.com> (https://github.com/algolia/)",
   "license": "MIT",
