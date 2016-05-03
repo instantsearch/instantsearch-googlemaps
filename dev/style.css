@@ -4,7 +4,7 @@
 
 .ais-hits--item {
   cursor: pointer;
-  transition: background-color, border-left 150ms;
+  transition: background-color 200ms;
 }
 
 .ais-hits--item__marker-hover,
@@ -12,7 +12,78 @@
   background-color: #f3f4f7;
 }
 
-.ais-hits--item__marker-active {
-  border-left: 2em solid #46aeda;
-  padding-left: 1em;
+/* STARS */
+.star-ratings-css {
+  display: inline-block;
+  unicode-bidi: bidi-override;
+  color: #c5c5c5;
+  font-size: 20px;
+  line-height: 20px;
+  height: 20px;
+  position: relative;
+  text-shadow: 0px 1px 0 #a2a2a2;
+}
+.star-ratings-css-top {
+  color: #e7711b;
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+
+body {
+  overflow-y: scroll;
+}
+
+#main {
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+#results {
+  width: 512px;
+  float:left;
+}
+
+#pagination {
+  margin-top: 1em;
+}
+
+.ais-hits--item {
+  padding: 1em;
+}
+
+.ais-hits--item .media img {
+  border-radius: 5px;
+}
+
+.ais-hits--item:last-child {
+  border-bottom: 1px solid #bbb;
+}
+
+.ais-hits--item + .ais-hits--item {
+  border-top: 1px solid #bbb;
+}
+
+#container-hits-map {
+  border-top: 1px solid #bbb;
+  margin-top: 2em;
+}
+
+#form-container {
+  background: #fff;
+  z-index: 10;
+}
+
+.media .btn {
+  margin-top: .5em;
+}
+
+.media .meta {
+  margin-top: .5em;
+}
+
+.gray {
+  color: #bbb;
 }

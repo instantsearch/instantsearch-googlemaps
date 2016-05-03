@@ -5,43 +5,51 @@
   <meta http-equiv="X-UA-Compatible" content="IE=Edge">
   <title>instantsearchGoogleMaps - widget demo</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap/3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap/3/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.css">
   <link rel="stylesheet" href="style.css">
   <!--[if lte IE 9]>
   <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
   <![endif]-->
 </head>
 <body>
-  <div class="container">
-    <div class="page-header">
-      <p><a title="Go to the instantsearch.js website" href="//community.algolia.com/instantsearch.js"><img src="https://res.cloudinary.com/hilnmyskv/image/upload/v1461158442/logo-instantsearchjs.svg" height="30" /></a></p>
-      <h1>
-        <a href="./">GoogleMaps widget</a> <a href="//github.com/instantsearch/instantsearch-googlemaps#readme">
-          <img src="https://res.cloudinary.com/hilnmyskv/image/upload/v1461160052/icon-github.svg" height="20" />
-        </a>
-      </h1>
-      <p>
-        This webpage is an example usage of the instantsearch-googlemaps widget.
-        Full documentation available in the
-        <a href="//github.com/instantsearch/instantsearch-googlemaps#readme">
-          <img src="https://res.cloudinary.com/hilnmyskv/image/upload/v1461160052/icon-github.svg" height="16" />
-          GitHub repository
-        </a>.
-      </p>
+  <div id="main">
+    <div class="container-fluid">
+      <div class="page-header">
+        <p><a title="Go to the instantsearch.js website" href="//community.algolia.com/instantsearch.js"><img src="https://res.cloudinary.com/hilnmyskv/image/upload/v1461158442/logo-instantsearchjs.svg" height="30" /></a></p>
+        <h1>
+          <a href="./">GoogleMaps widget</a> <a href="//github.com/instantsearch/instantsearch-googlemaps#readme">
+            <img src="https://res.cloudinary.com/hilnmyskv/image/upload/v1461160052/icon-github.svg" height="20" />
+          </a>
+        </h1>
+        <p>
+          This webpage is an example usage of the instantsearch-googlemaps widget.
+          Full documentation available in the
+          <a href="//github.com/instantsearch/instantsearch-googlemaps#readme">
+            <img src="https://res.cloudinary.com/hilnmyskv/image/upload/v1461160052/icon-github.svg" height="16" />
+            GitHub repository
+          </a>.
+        </p>
+      </div>
+
+      <form class="form-inline" id="form-container">
+        <div class="form-group">
+          <input id="search-box" type="text" placeholder="Search for restaurants" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label for="place">near</label>
+          <input type="password" class="form-control" id="place" placeholder="Street, city..">
+        </div>
+        <button type="button" class="btn btn-default">around me</button>
+      </form>
     </div>
 
-    <form class="form-inline">
-      <div class="form-group">
-        <input id="search-box" type="text" placeholder="Search for airports" class="form-control input-lg" />
-      </div>
-    </form>
-
-    <div class="row">
-      <div class="col-md-4">
+    <div id="container-hits-map">
+      <div id="results">
         <div id="hits"></div>
+        <div id="pagination"></div>
       </div>
-      <div class="col-md-8">
-        <div id="google-maps"></div>
-      </div>
+      <div id="map-container"></div>
     </div>
   </div>
 

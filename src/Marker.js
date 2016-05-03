@@ -25,7 +25,7 @@ export default class Marker extends google.maps.OverlayView {
   onAdd() {
     this._container = document.createElement('div');
     this._container.style.position = 'absolute';
-    this._container.classList.add('ais-google-maps--marker');
+    this._container.classList.add('ais-googlemaps--marker');
     this._container.innerHTML = this._template();
     this._container.addEventListener('mouseenter', this._handleMouseEnter);
     this._container.addEventListener('mouseleave', this._handleMouseLeave);
@@ -45,17 +45,17 @@ export default class Marker extends google.maps.OverlayView {
 
   setHover(state) {
     if (state === true) {
-      this._container.classList.add('ais-google-maps--marker__hover');
+      this._container.classList.add('ais-googlemaps--marker__hover');
     } else {
-      this._container.classList.remove('ais-google-maps--marker__hover');
+      this._container.classList.remove('ais-googlemaps--marker__hover');
     }
   }
 
   setActive(state) {
     if (state === true) {
-      this._container.classList.add('ais-google-maps--marker__active');
+      this._container.classList.add('ais-googlemaps--marker__active');
     } else {
-      this._container.classList.remove('ais-google-maps--marker__active');
+      this._container.classList.remove('ais-googlemaps--marker__active');
     }
   }
 }

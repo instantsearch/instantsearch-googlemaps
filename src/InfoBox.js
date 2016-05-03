@@ -22,7 +22,7 @@ export default class InfoBox extends google.maps.OverlayView {
   onAdd() {
     this._container = document.createElement('div');
     this._container.style.position = 'absolute';
-    this._container.classList.add('ais-google-maps--infobox');
+    this._container.classList.add('ais-googlemaps--infobox');
     this._container.innerHTML = this._template();
     this.getPanes().overlayImage.appendChild(this._container);
 

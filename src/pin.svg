@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" class="ais-google-maps--pin-wrapper" viewBox="0 0 140 222">
-  <path class="ais-google-maps--pin" fill="#999" stroke="#000" stroke-width="10" d="M70 5.2C34.7 5.2 6 36 6 73.7c0 15.2 9 40 27.8 76 13 25 26 46.2 26.6 47l9.6 15.5 9.5-15.4c.5-1 13.5-22 26.7-47.3C125 113.7 134 89 134 73.7 134 36 105.2 5.3 70 5.2z"/>
-  <circle class="ais-google-maps--pin-circle" cx="70" cy="69.1" r="35.3" fill="#fff" stroke="#000" stroke-width="7"/>
+<svg xmlns="http://www.w3.org/2000/svg" class="ais-googlemaps--pin-wrapper" viewBox="0 0 140 222">
+  <path class="ais-googlemaps--pin" fill="#999" stroke="#000" stroke-width="10" d="M70 5.2C34.7 5.2 6 36 6 73.7c0 15.2 9 40 27.8 76 13 25 26 46.2 26.6 47l9.6 15.5 9.5-15.4c.5-1 13.5-22 26.7-47.3C125 113.7 134 89 134 73.7 134 36 105.2 5.3 70 5.2z"/>
+  <circle class="ais-googlemaps--pin-circle" cx="70" cy="69.1" r="35.3" fill="#fff" stroke="#000" stroke-width="7"/>
 </svg>

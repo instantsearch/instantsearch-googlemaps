@@ -11,7 +11,7 @@ import './src/style.css';
 
 const defaultMapOptions = {};
 const defaultTemplates = {
-  marker: pinIcon,
+  marker: () => pinIcon,
   infoBox: ({hit, hitIndex}) => `Hit #${hitIndex}, objectID: ${hit.objectID}`
 };
 const defaultOffsets = {
@@ -28,20 +28,53 @@ function googleMaps({
   container,
   templates = defaultTemplates,
   offsets = defaultOffsets,
-  mapOptions = defaultMapOptions
+  mapOptions = defaultMapOptions,
+  refineOnMapInteraction = false
 }) {
   let widget = new EventEmitter();
 
   widget = {
-    init() {
+    _userRefine(helper) {
+      if (!refineOnMapInteraction) {
+        return;
+      }
+
+      const bounds = padBounds(this._map.getBounds(), -0.05);
+      const p1 = bounds.getNorthEast();
+      const p2 = bounds.getSouthWest();
+      const box = [p1.lat(), p1.lng(), p2.lat(), p2.lng()];
+      this._userRefined = true;
+      helper.setQueryParameter('insideBoundingBox', box.join(','));
+      helper.search();
+    },
+
+    init({helper}) {
       this._map = new google.maps.Map(container, mapOptions);
       this._currentMarkers = [];
-      container.classList.add('ais-google-maps');
+      this._userRefine = this._userRefine.bind(this, helper);
+      this._zoomChanged = this._zoomChanged.bind(this);
+
+      container.classList.add('ais-googlemaps');
+
+      this._map.addListener('dragend', this._userRefine);
+      this._firstRender = true;
+    },
+
+    _zoomChanged() {
+      if (this._ignoreNextZoomEvent) {
+        this._ignoreNextZoomEvent = false;
+        return;
+      }
+
+      this._userRefine();
     },
 
     render({results}) {
       this._currentHits = results.hits;
       this._currentMarkers.forEach(marker => marker.setMap(null));
+      if (this._currentInfoBox) {
+        this._currentInfoBox.setMap(null);
+      }
       this._currentMarkers = [];
 
       const bounds = new google.maps.LatLngBounds();
@@ -50,7 +83,7 @@ function googleMaps({
         bounds.extend(latlng);
         const marker = new Marker({
           latlng,
-          template: () => templates.marker,
+          template: templates.marker,
           offset: offsets.marker,
           handleMouseEnter: () => {
             this.setHoverMarkerFromIndex(markerIndex);
@@ -69,7 +102,17 @@ function googleMaps({
         this._currentMarkers.push(marker);
       });
 
+      if (this._userRefined) {
+        return;
+      }
+
       this._map.fitBounds(bounds);
+      this._ignoreNextZoomEvent = true;
+
+      if (this._firstRender) {
+        this._map.addListener('zoom_changed', this._zoomChanged);
+        this._firstRender = false;
+      }
     },
 
     setHoverMarkerFromIndex(askedMarkedIndex) {
@@ -117,6 +160,17 @@ function googleMaps({
   };
 
   return widget;
+}
+
+function padBounds(bounds, bufferRatio) {
+  var sw = bounds.getSouthWest();
+  var ne = bounds.getNorthEast();
+  var heightBuffer = Math.abs(sw.lat() - ne.lat()) * bufferRatio;
+  var widthBuffer = Math.abs(sw.lng() - ne.lng()) * bufferRatio;
+
+  return new google.maps.LatLngBounds(
+    new google.maps.LatLng(sw.lat() - heightBuffer, sw.lng() - widthBuffer),
+    new google.maps.LatLng(ne.lat() + heightBuffer, ne.lng() + widthBuffer));
 }
 
 instantsearch.widgets.googleMaps = googleMaps;
