@@ -39,12 +39,28 @@ function googleMaps({
         return;
       }
 
-      const bounds = padBounds(this._map.getBounds(), -0.05);
-      const p1 = bounds.getNorthEast();
-      const p2 = bounds.getSouthWest();
+      if (this._ignoreZoomChange) {
+        this._ignoreZoomChange = false;
+        return;
+      }
+
+      const bounds = this._map.getBounds();
+
+      if (bounds === null) {
+        return;
+      }
+
+      const paddedBounds = padBounds(bounds, -0.05);
+      const p1 = paddedBounds.getNorthEast();
+      const p2 = paddedBounds.getSouthWest();
       const box = [p1.lat(), p1.lng(), p2.lat(), p2.lng()];
-      this._userRefined = true;
       helper.setQueryParameter('insideBoundingBox', box.join(','));
+      helper.setQueryParameter('aroundLatLng');
+      helper.setPage(0);
+      history.replaceState({
+        zoom: this._map.getZoom(),
+        center: this._map.getCenter().toJSON()
+      }, null);
       helper.search();
     },
 
@@ -52,24 +68,14 @@ function googleMaps({
       this._map = new google.maps.Map(container, mapOptions);
       this._currentMarkers = [];
       this._userRefine = this._userRefine.bind(this, helper);
-      this._zoomChanged = this._zoomChanged.bind(this);
 
       container.classList.add('ais-googlemaps');
 
       this._map.addListener('dragend', this._userRefine);
-      this._firstRender = true;
+      this._map.addListener('zoom_changed', this._userRefine);
     },
 
-    _zoomChanged() {
-      if (this._ignoreNextZoomEvent) {
-        this._ignoreNextZoomEvent = false;
-        return;
-      }
-
-      this._userRefine();
-    },
-
-    render({results}) {
+    render({results, state}) {
       this._currentHits = results.hits;
       this._currentMarkers.forEach(marker => marker.setMap(null));
       if (this._currentInfoBox) {
@@ -102,17 +108,21 @@ function googleMaps({
         this._currentMarkers.push(marker);
       });
 
-      if (this._userRefined) {
+      if (state.getQueryParameter('insideBoundingBox') !== undefined) {
+        if (history.state && history.state.zoom !== undefined) {
+          this._ignoreZoomChange = true;
+          this._map.setCenter(history.state.center);
+          this._map.setZoom(history.state.zoom);
+        }
         return;
       }
 
-      this._map.fitBounds(bounds);
-      this._ignoreNextZoomEvent = true;
-
-      if (this._firstRender) {
-        this._map.addListener('zoom_changed', this._zoomChanged);
-        this._firstRender = false;
-      }
+      this._ignoreZoomChange = true;
+      this._map.fitBounds(padBounds(bounds, -0.05));
+      history.replaceState({
+        zoom: this._map.getZoom(),
+        center: this._map.getCenter().toJSON()
+      }, null);
     },
 
     setHoverMarkerFromIndex(askedMarkedIndex) {
@@ -136,24 +146,24 @@ function googleMaps({
 
       const marker = this._currentMarkers[askedMarkedIndex];
       const hit = this._currentHits[askedMarkedIndex];
-      if (!this._currentInfoBox || this._currentInfoBoxIndex !== askedMarkedIndex) {
-        if (this._currentInfoBox) {
-          this._currentInfoBox.setMap(null);
-        }
-
-        const infoBox = new InfoBox({
-          latlng: marker._latlng,
-          offset: {
-            x: offsets.infoBox.x,
-            y: -marker._container.getBoundingClientRect().height + offsets.infoBox.y
-          },
-          template: templates.infoBox.bind(null, {hit, hitIndex: askedMarkedIndex})
-        });
-
-        infoBox.setMap(this._map);
-        this._currentInfoBox = infoBox;
-        this._currentInfoBoxIndex = askedMarkedIndex;
-      }
+      // if (!this._currentInfoBox || this._currentInfoBoxIndex !== askedMarkedIndex) {
+      //   if (this._currentInfoBox) {
+      //     this._currentInfoBox.setMap(null);
+      //   }
+      //
+      //   const infoBox = new InfoBox({
+      //     latlng: marker._latlng,
+      //     offset: {
+      //       x: offsets.infoBox.x,
+      //       y: -marker._container.getBoundingClientRect().height + offsets.infoBox.y
+      //     },
+      //     template: templates.infoBox.bind(null, {hit, hitIndex: askedMarkedIndex})
+      //   });
+      //
+      //   infoBox.setMap(this._map);
+      //   this._currentInfoBox = infoBox;
+      //   this._currentInfoBoxIndex = askedMarkedIndex;
+      // }
     },
     ...widget,
     ...EventEmitter.prototype
