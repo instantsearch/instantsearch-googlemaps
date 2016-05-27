@@ -16,8 +16,9 @@ const defaultTemplates = {
 };
 const defaultOffsets = {
   marker: {x: 0, y: 0},
-  infoBox: {x: 0, y: -6}
+  infoBox: {x: 0, y: -12}
 };
+
 
 /**
  * algolia/instantsearch.js widget to display your Algolia geo hits on a map using Google Maps APIs
@@ -26,16 +27,27 @@ const defaultOffsets = {
  */
 function googleMaps({
   container,
-  templates = defaultTemplates,
+  templates = {},
   offsets = defaultOffsets,
   mapOptions = defaultMapOptions,
   refineOnMapInteraction = false
 }) {
   let widget = new EventEmitter();
+  templates = Object.assign({}, defaultTemplates, templates);
 
   widget = {
     _userRefine(helper) {
-      if (!refineOnMapInteraction) {
+      // console.log("_userRefine");
+      // if (this._currentHits.length === 0)
+      //   return;
+
+      const bounds = this._map.getBounds();
+
+      if (bounds) {
+        this.emit('viewport changed', {bounds});
+      }
+
+      if (!this._refineOnMapInteraction) {
         return;
       }
 
@@ -44,22 +56,23 @@ function googleMaps({
         return;
       }
 
-      const bounds = this._map.getBounds();
-
       if (bounds === null) {
         return;
       }
 
+      // console.log("_userRefine passed");
       const paddedBounds = padBounds(bounds, -0.05);
       const p1 = paddedBounds.getNorthEast();
       const p2 = paddedBounds.getSouthWest();
       const box = [p1.lat(), p1.lng(), p2.lat(), p2.lng()];
+      const mapZoom = this._map.getZoom();
+      const mapCenter = this._map.getCenter();
       helper.setQueryParameter('insideBoundingBox', box.join(','));
       helper.setQueryParameter('aroundLatLng');
       helper.setPage(0);
-      history.replaceState({
-        zoom: this._map.getZoom(),
-        center: this._map.getCenter().toJSON()
+      this._map && history.replaceState({
+        zoom: mapZoom,
+        center: mapCenter && mapCenter.toJSON()
       }, null);
       helper.search();
     },
@@ -68,15 +81,30 @@ function googleMaps({
       this._map = new google.maps.Map(container, mapOptions);
       this._currentMarkers = [];
       this._userRefine = this._userRefine.bind(this, helper);
+      this._refineOnMapInteraction = refineOnMapInteraction;
+      this._userMouseOverMap = false;
+      var that = this;
 
       container.classList.add('ais-googlemaps');
 
       this._map.addListener('dragend', this._userRefine);
-      this._map.addListener('zoom_changed', this._userRefine);
+      this._map.addListener('zoom_changed', function() {
+        // console.log("zoom_changed");
+        if (that._userMouseOverMap) {
+          that._userRefine();
+        }
+      });
+      container.addEventListener('mouseleave', () => {
+        that._userMouseOverMap = false;
+      });
+      container.addEventListener('mouseenter', () => {
+        that._userMouseOverMap = true;
+      });
     },
 
     render({results, state}) {
       this._currentHits = results.hits;
+
       this._currentMarkers.forEach(marker => marker.setMap(null));
       if (this._currentInfoBox) {
         this._currentInfoBox.setMap(null);
@@ -117,6 +145,10 @@ function googleMaps({
         return;
       }
 
+      if (this._currentHits.length === 0 && this._map.getZoom()) {
+        return;
+      }
+
       this._ignoreZoomChange = true;
       this._map.fitBounds(padBounds(bounds, -0.05));
       history.replaceState({
@@ -135,6 +167,14 @@ function googleMaps({
       });
     },
 
+    setRefineOnMapInteraction(active) {
+      this._refineOnMapInteraction = active;
+    },
+
+    refreshMap() {
+      this._userRefine();
+    },
+
     setActiveMarkerFromIndex(askedMarkedIndex) {
       this._currentMarkers.forEach((marker, markerIndex) => {
         if (askedMarkedIndex === markerIndex) {
@@ -146,27 +186,27 @@ function googleMaps({
 
       const marker = this._currentMarkers[askedMarkedIndex];
       const hit = this._currentHits[askedMarkedIndex];
-      // if (!this._currentInfoBox || this._currentInfoBoxIndex !== askedMarkedIndex) {
-      //   if (this._currentInfoBox) {
-      //     this._currentInfoBox.setMap(null);
-      //   }
-      //
-      //   const infoBox = new InfoBox({
-      //     latlng: marker._latlng,
-      //     offset: {
-      //       x: offsets.infoBox.x,
-      //       y: -marker._container.getBoundingClientRect().height + offsets.infoBox.y
-      //     },
-      //     template: templates.infoBox.bind(null, {hit, hitIndex: askedMarkedIndex})
-      //   });
-      //
-      //   infoBox.setMap(this._map);
-      //   this._currentInfoBox = infoBox;
-      //   this._currentInfoBoxIndex = askedMarkedIndex;
-      // }
+      if (!this._currentInfoBox || this._currentInfoBoxIndex !== askedMarkedIndex) {
+        if (this._currentInfoBox) {
+          this._currentInfoBox.setMap(null);
+        }
+
+        const infoBox = new InfoBox({
+          latlng: marker._latlng,
+          offset: {
+            x: offsets.infoBox.x,
+            y: -marker._container.getBoundingClientRect().height + offsets.infoBox.y
+          },
+          template: templates.infoBox.bind(null, {hit, hitIndex: askedMarkedIndex})
+        });
+
+        infoBox.setMap(this._map);
+        this._currentInfoBox = infoBox;
+        this._currentInfoBoxIndex = askedMarkedIndex;
+      }
     },
     ...widget,
-    ...EventEmitter.prototype
+    ...EventEmitter.prototype,
   };
 
   return widget;
