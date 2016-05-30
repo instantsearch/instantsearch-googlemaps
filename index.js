@@ -151,10 +151,10 @@ function googleMaps({
 
       this._ignoreZoomChange = true;
       this._map.fitBounds(padBounds(bounds, -0.05));
-      history.replaceState({
+      google.maps.event.addListenerOnce(this._map, 'center_changed', () => history.replaceState({
         zoom: this._map.getZoom(),
         center: this._map.getCenter().toJSON()
-      }, null);
+      }, null));
     },
 
     setHoverMarkerFromIndex(askedMarkedIndex) {
