@@ -5,7 +5,6 @@
   "main": "dist-es5-module/index.js",
   "scripts": {
     "dev": "webpack-dev-server --config webpack.dev.config.babel.js --hot --inline --no-info",
-    "shrinkwrap": "npm-shrinkwrap --dev",
     "prepublish": "NODE_ENV=production npm run build",
     "build": "./scripts/build.sh",
     "release": "./scripts/release.sh",
@@ -30,7 +29,6 @@
     "instantsearch.js": "^1.1.0",
     "json": "^9.0.3",
     "mversion": "^1.10.1",
-    "npm-shrinkwrap": "^200.4.0",
     "pretty-bytes": "^2.0.1",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
