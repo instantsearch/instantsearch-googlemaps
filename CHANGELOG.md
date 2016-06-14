@@ -1,3 +1,9 @@
+<a name="1.2.4"></a>
+## [1.2.4](https://github.com/instantsearch/instantsearch-googlemaps/compare/v1.2.3...v1.2.4) (2016-06-14)
+
+
+
+
 <a name="1.2.3"></a>
 ## [1.2.3](https://github.com/instantsearch/instantsearch-googlemaps/compare/v2.2.2...v1.2.3) (2015-12-12)
 
