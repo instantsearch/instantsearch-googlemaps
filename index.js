@@ -58,11 +58,15 @@ function googleMaps({
       let zoom;
       let center;
 
-      let markers = results.hits.map((hit, index) => ({
-        position: new google.maps.LatLng(hit._geoloc),
-        id: hit.objectID,
-        ...prepareMarkerData(hit, index, results.hits)
-      }));
+      let markers = results.hits
+        .filter(hit => hit._geoloc !== undefined)
+        .map((hit, index) =>
+          ({
+            position: new google.maps.LatLng(hit._geoloc),
+            id: hit.objectID,
+            ...prepareMarkerData(hit, index, results.hits)
+          })
+        );
 
       if (markers.length === 0) {
         zoom = 1;
