@@ -1,3 +1,13 @@
+<a name="1.2.6"></a>
+## [1.2.6](https://github.com/instantsearch/instantsearch-googlemaps/compare/v1.2.3...v1.2.6) (2016-07-19)
+
+
+### Bug Fixes
+
+* **hits:** do no try to render hits with no _geoloc ([7b20e2e](https://github.com/instantsearch/instantsearch-googlemaps/commit/7b20e2e)), closes [#9](https://github.com/instantsearch/instantsearch-googlemaps/issues/9)
+
+
+
 <a name="1.2.5"></a>
 ## [1.2.5](https://github.com/instantsearch/instantsearch-googlemaps/compare/v1.2.3...v1.2.5) (2016-07-13)
 
