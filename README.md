@@ -1,3 +1,10 @@
+**DEPRECATED**
+
+This module is currently too buggy and complex for us to support it. It's a nice example on how to integrate with google maps
+but we do not support it. Have a look, build and plug your own module using instantsearch custom widgets and see for yourself.
+
+https://community.algolia.com/instantsearch.js/documentation/#custom-widgets
+
 # instantsearch-googlemaps _BETA_
 
 [algolia/instantsearch.js](https://github.com/algolia/instantsearch.js/) widget to display your [Algolia geo hits](https://www.algolia.com/doc/rest#geo-search-parameters) on a map using [Google Maps APIs](https://developers.google.com/maps/)
