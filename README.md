@@ -1,9 +1,9 @@
-**DEPRECATED**
+# DEPRECATED
 
 This module is currently too buggy and complex for us to support it. It's a nice example on how to integrate with google maps
 but we do not support it. Have a look, build and plug your own module using instantsearch custom widgets and see for yourself.
 
-https://community.algolia.com/instantsearch.js/documentation/#custom-widgets
+Here's a simple example on how to plug InstantSearch.js to google maps: https://jsfiddle.net/wkjyev3p/8/
 
 # instantsearch-googlemaps _BETA_
 
