@@ -57,7 +57,7 @@ instantsearch-googlemaps is available on [jsDelivr](http://www.jsdelivr.com/):
 Add the instantsearch CSS to the `<head>`:
 
 ```html
-<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.css" />
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/instantsearch.js@1/dist/instantsearch.min.css" />
 ```
 
 Load the JavaScript files where relevant:
@@ -65,8 +65,8 @@ Load the JavaScript files where relevant:
 ```html
 <!-- https://developers.google.com/maps/documentation/javascript/tutorial -->
 <script src="//maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
-<script src="//cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.js"></script>
-<script src="//cdn.jsdelivr.net/instantsearch-googlemaps/1/instantsearch-googlemaps.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@1/dist/instantsearch.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch-googlemaps@1/dist/instantsearch-googlemaps.min.js"></script>
 ```
 
 ### With npm, browserify, webpack
